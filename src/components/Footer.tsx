@@ -54,7 +54,11 @@ export default function Footer() {
                 <div className="bg-white/5 p-3 rounded-xl text-secondary">
                   <MapPin size={20} />
                 </div>
-                <span className="font-medium">📍 Jaboatão dos Guararapes - PE</span>
+                <span className="font-medium">
+                  Rua Rossini Roosevelt de Albuquerque, 10, Sala 103<br/>
+                  Piedade, Jaboatão dos Guararapes - PE<br/>
+                  CEP: 54410-310
+                </span>
               </li>
               <li className="flex items-center gap-4 text-gray-400">
                 <div className="bg-white/5 p-3 rounded-xl text-secondary">
