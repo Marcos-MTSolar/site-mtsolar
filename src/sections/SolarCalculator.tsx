@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Calculator, TrendingUp, Zap, Clock, ArrowRight, Loader2 } from 'lucide-react';
+import { Calculator, TrendingUp, Zap, Clock, ArrowRight } from 'lucide-react';
 
 type InputMode = 'kwh' | 'reais';
 
@@ -9,23 +9,18 @@ export default function SolarCalculator() {
   const [isCalculating, setIsCalculating] = useState(false);
   const [calculated, setCalculated] = useState(false);
 
-  // Constants
+  // Constantes baseadas nas fórmulas solicitadas
   const TARIFF = 0.85;
-  const SUN_HOURS = 5.0;
-  const DAYS = 30;
-  const PANEL_WATTS = 585;
-  const COST_PER_KWP = 4200;
-  const LOSS_FACTOR = 0.80;
 
   const handleCalculate = () => {
     setIsCalculating(true);
     setCalculated(false);
     
-    // Simple delay for UX
+    // Delay simples apenas para feedback visual (sem animação pesada)
     setTimeout(() => {
       setIsCalculating(false);
       setCalculated(true);
-    }, 600);
+    }, 400);
   };
 
   const scrollToForm = () => {
@@ -35,62 +30,64 @@ export default function SolarCalculator() {
     }
   };
 
-  // Logic
-  const consumptionKwh = mode === 'kwh' ? value : value / TARIFF;
+  // Lógica de Cálculo (Fórmulas solicitadas)
+  const consumo = mode === 'kwh' ? value : value / TARIFF;
   
-  // kWp necessário
-  const kwp = consumptionKwh / (SUN_HOURS * DAYS * LOSS_FACTOR);
+  // kwp = consumo / (5.0 * 30 * 0.80)
+  const kwp = consumo / (5.0 * 30 * 0.80);
   
-  // Número de painéis (arredondar para CIMA)
-  const panels = Math.ceil((kwp * 1000) / PANEL_WATTS);
+  // paineis = Math.ceil((kwp * 1000) / 585)
+  const paineis = Math.ceil((kwp * 1000) / 585);
   
-  // kWp REAL (baseado no número real de painéis)
-  const kwpReal = (panels * PANEL_WATTS) / 1000;
+  // kwpReal = (paineis * 585) / 1000
+  const kwpReal = (paineis * 585) / 1000;
   
-  // Economia
-  const economy = consumptionKwh * TARIFF;
-  const annualEconomy = economy * 12;
+  // economiaMensal = consumo * 0.85
+  const economiaMensal = consumo * 0.85;
   
-  // Retorno (ROI)
-  const roiMonths = Math.round((kwpReal * COST_PER_KWP) / economy);
+  // economiaAnual = economiaMensal * 12
+  const economiaAnual = economiaMensal * 12;
+  
+  // retorno = Math.round((kwpReal * 4200) / economiaMensal)
+  const retorno = Math.round((kwpReal * 4200) / economiaMensal);
 
   return (
-    <section id="calculator" className="py-24 bg-[#0F1E3D] text-white">
+    <section id="calculadora" className="py-20 bg-[#0F1E3D] text-white">
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-black mb-6">
+          <div className="text-center mb-10">
+            <h2 className="text-4xl md:text-5xl font-black mb-4">
               Simule sua <span className="text-secondary">Economia</span>
             </h2>
             <p className="text-gray-400 text-lg">
-              Descubra o potencial do sol para reduzir sua conta de energia.
+              Descubra o potencial do sol para reduzir sua conta de energia de forma simples.
             </p>
           </div>
 
-          <div className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 md:p-12 shadow-2xl">
-            <div className="space-y-10">
-              {/* Toggle Mode */}
+          <div className="bg-[#162950] border border-white/10 rounded-[2rem] p-6 md:p-10 shadow-lg">
+            <div className="space-y-8">
+              {/* Seleção de Modo */}
               <div className="flex justify-center">
-                <div className="bg-white/10 p-1 rounded-2xl flex gap-1">
+                <div className="bg-white/5 p-1 rounded-xl flex gap-1 border border-white/5">
                   <button
                     onClick={() => { setMode('kwh'); setCalculated(false); }}
-                    className={`px-6 py-2 rounded-xl font-bold transition-all duration-300 ${mode === 'kwh' ? 'bg-secondary text-primary' : 'hover:bg-white/5'}`}
+                    className={`px-5 py-2 rounded-lg font-bold transition-opacity duration-300 ${mode === 'kwh' ? 'bg-secondary text-primary' : 'text-gray-300'}`}
                   >
                     Uso em kWh
                   </button>
                   <button
                     onClick={() => { setMode('reais'); setCalculated(false); }}
-                    className={`px-6 py-2 rounded-xl font-bold transition-all duration-300 ${mode === 'reais' ? 'bg-secondary text-primary' : 'hover:bg-white/5'}`}
+                    className={`px-5 py-2 rounded-lg font-bold transition-opacity duration-300 ${mode === 'reais' ? 'bg-secondary text-primary' : 'text-gray-300'}`}
                   >
                     Valor em R$
                   </button>
                 </div>
               </div>
 
-              {/* Slider & Input */}
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-8 items-end">
+              {/* Entrada de Valores */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6 items-end">
                 <div className="md:col-span-3 space-y-4">
-                  <div className="flex justify-between font-bold text-xl">
+                  <div className="flex justify-between font-bold text-lg">
                     <span>{mode === 'kwh' ? 'Consumo Mensal' : 'Valor da Conta'}</span>
                     <span className="text-secondary">
                       {mode === 'kwh' ? `${value} kWh` : `R$ ${value.toLocaleString('pt-BR')}`}
@@ -99,11 +96,11 @@ export default function SolarCalculator() {
                   <input
                     type="range"
                     min={mode === 'kwh' ? 100 : 150}
-                    max={mode === 'kwh' ? 2500 : 3500}
+                    max={mode === 'kwh' ? 3000 : 5000}
                     step={50}
                     value={value}
                     onChange={(e) => { setValue(Number(e.target.value)); setCalculated(false); }}
-                    className="w-full h-3 bg-white/10 rounded-lg appearance-none cursor-pointer accent-secondary"
+                    className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-secondary"
                   />
                 </div>
                 <div className="md:col-span-1">
@@ -111,71 +108,67 @@ export default function SolarCalculator() {
                     type="number"
                     value={value}
                     onChange={(e) => { setValue(Number(e.target.value)); setCalculated(false); }}
-                    className="w-full bg-white/10 border border-white/20 rounded-2xl px-6 py-4 text-2xl font-black text-center focus:border-secondary outline-none transition-all duration-300"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xl font-bold text-center focus:border-secondary outline-none text-white"
                   />
                 </div>
               </div>
 
-              {/* CTA Button */}
+              {/* Botão de Calcular */}
               <button
                 onClick={handleCalculate}
                 disabled={isCalculating}
-                className="w-full bg-secondary text-primary py-5 rounded-2xl font-black text-xl shadow-xl hover:scale-[1.01] active:scale-95 transition-all duration-300 flex items-center justify-center gap-3 disabled:opacity-50"
+                className="w-full bg-secondary text-primary py-4 rounded-xl font-black text-xl shadow-md transition-opacity duration-300 flex items-center justify-center gap-2 disabled:opacity-50"
               >
-                {isCalculating ? (
-                  <Loader2 className="animate-spin" size={28} />
-                ) : (
+                {isCalculating ? 'CALCULANDO...' : (
                   <>
-                    Calcular Agora
-                    <Calculator size={28} />
+                    CALCULAR AGORA
+                    <Calculator size={24} />
                   </>
                 )}
               </button>
 
-              {/* Result Area */}
-              {calculated && (
-                <div className="pt-10 border-t border-white/10 space-y-8 transition-all duration-500 ease-in-out">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <ResultCard 
-                      icon={<Zap size={20} />} 
-                      label="Potência" 
-                      value={`${kwpReal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} kWp`} 
-                    />
-                    <ResultCard 
-                      icon={<Calculator size={20} />} 
-                      label="Painéis" 
-                      value={`${panels} unid.`} 
-                    />
-                    <ResultCard 
-                      icon={<TrendingUp size={20} />} 
-                      label="Economia" 
-                      value={`R$ ${economy.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}`} 
-                    />
-                    <ResultCard 
-                      icon={<Clock size={20} />} 
-                      label="Retorno" 
-                      value={`${roiMonths} meses`} 
-                    />
-                  </div>
+              {/* Área de Resultados */}
+              <div className={`transition-opacity duration-500 ease-in-out ${calculated ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden'}`}>
+                {calculated && (
+                  <div className="pt-8 border-t border-white/5 space-y-8">
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                      <ResultCard 
+                        icon={<Zap size={18} />} 
+                        label="Potência" 
+                        value={`${kwpReal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} kWp`} 
+                      />
+                      <ResultCard 
+                        icon={<Calculator size={18} />} 
+                        label="Painéis" 
+                        value={`${paineis} un.`} 
+                      />
+                      <ResultCard 
+                        icon={<TrendingUp size={18} />} 
+                        label="Economia" 
+                        value={`R$ ${economiaMensal.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}`} 
+                      />
+                      <ResultCard 
+                        icon={<Clock size={18} />} 
+                        label="Retorno" 
+                        value={`${retorno} meses`} 
+                      />
+                    </div>
 
-                  <div className="bg-secondary/10 border border-secondary/30 rounded-3xl p-8 text-center space-y-6">
-                    <p className="text-xl font-bold">
-                      Economia estimada de <span className="text-secondary">R$ {annualEconomy.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}</span> por ano!
-                      <br/>
-                      <span className="text-sm font-medium text-gray-400 mt-2 block">
-                        Sistema de {kwpReal.toLocaleString('pt-BR')} kWp com {panels} painéis de 585W.
-                      </span>
-                    </p>
-                    <button
-                      onClick={scrollToForm}
-                      className="inline-flex items-center gap-3 bg-secondary text-primary px-10 py-4 rounded-2xl font-black text-xl hover:bg-white transition-all duration-300 shadow-xl"
-                    >
-                      Solicitar Orçamento Gratuito
-                      <ArrowRight size={24} />
-                    </button>
+                    <div className="bg-secondary/5 border border-secondary/20 rounded-2xl p-6 text-center space-y-4">
+                      <p className="text-lg font-bold">
+                        Economia estimada de <span className="text-secondary">R$ {economiaAnual.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}</span> por ano!
+                      </p>
+                      <button
+                        onClick={scrollToForm}
+                        className="inline-flex items-center gap-2 bg-secondary text-primary px-8 py-3 rounded-xl font-black text-lg transition-opacity duration-300 hover:opacity-90"
+                      >
+                        Solicitar Orçamento
+                        <ArrowRight size={20} />
+                      </button>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -186,10 +179,10 @@ export default function SolarCalculator() {
 
 function ResultCard({ icon, label, value }: { icon: React.ReactNode, label: string, value: string }) {
   return (
-    <div className="bg-white p-6 rounded-[2rem] text-primary shadow-xl border-b-4 border-secondary">
-      <div className="text-secondary mb-2">{icon}</div>
-      <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">{label}</p>
-      <p className="text-xl font-black">{value}</p>
+    <div className="bg-white p-4 rounded-2xl text-primary shadow-md border-b-2 border-secondary">
+      <div className="text-secondary mb-1">{icon}</div>
+      <p className="text-[9px] font-black uppercase tracking-wider text-gray-500 mb-0.5">{label}</p>
+      <p className="text-base font-black truncate">{value}</p>
     </div>
   );
 }

@@ -26,7 +26,7 @@ const servicesList = [
 
 export default function Services() {
   return (
-    <section id="services" className="py-24 bg-light">
+    <section id="servicos" className="py-24 bg-light">
       <div className="container mx-auto px-6">
         <div className="text-center max-w-3xl mx-auto mb-20">
           <span className="text-secondary font-black tracking-[0.2em] uppercase mb-4 block">Especialidades</span>

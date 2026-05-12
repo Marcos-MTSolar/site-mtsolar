@@ -4,11 +4,11 @@ import { cn } from '../lib/utils';
 import logo from '../assets/logo-mtsolar.png';
 
 const navLinks = [
-  { name: 'Quem Somos', href: '#about' },
-  { name: 'Serviços', href: '#services' },
-  { name: 'Calculadora', href: '#calculator' },
-  { name: 'Projetos', href: '#projects' },
-  { name: 'Contato', href: '#contact' },
+  { name: 'Quem Somos', href: '#quem-somos' },
+  { name: 'Serviços', href: '#servicos' },
+  { name: 'Calculadora', href: '#calculadora' },
+  { name: 'Projetos', href: '#projetos' },
+  { name: 'Contato', href: '#contato' },
 ];
 
 export default function Header() {
@@ -42,17 +42,23 @@ export default function Header() {
             <a
               key={link.name}
               href={link.href}
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById(link.href.replace('#', ''))?.scrollIntoView({ behavior: 'smooth' });
+              }}
               className="text-sm font-bold text-primary hover:text-secondary transition-colors"
             >
               {link.name}
             </a>
           ))}
-          <a
-            href="#calculator"
+          <button
+            onClick={() => {
+              document.getElementById('calculadora')?.scrollIntoView({ behavior: 'smooth' });
+            }}
             className="bg-secondary text-primary px-6 py-2.5 rounded-xl font-black shadow-lg shadow-secondary/20 hover:scale-105 active:scale-95 transition-all"
           >
             Simule Grátis
-          </a>
+          </button>
         </nav>
 
         {/* Mobile Menu Button */}
@@ -73,19 +79,25 @@ export default function Header() {
           <a
             key={link.name}
             href={link.href}
-            onClick={() => setIsMenuOpen(false)}
+            onClick={(e) => {
+              e.preventDefault();
+              setIsMenuOpen(false);
+              document.getElementById(link.href.replace('#', ''))?.scrollIntoView({ behavior: 'smooth' });
+            }}
             className="text-2xl font-black text-primary hover:text-secondary transition-colors"
           >
             {link.name}
           </a>
         ))}
-        <a
-          href="#calculator"
-          onClick={() => setIsMenuOpen(false)}
+        <button
+          onClick={() => {
+            setIsMenuOpen(false);
+            document.getElementById('calculadora')?.scrollIntoView({ behavior: 'smooth' });
+          }}
           className="bg-secondary text-primary px-10 py-4 rounded-2xl font-black text-xl shadow-xl"
         >
           Simule Grátis
-        </a>
+        </button>
       </div>
     </header>
   );

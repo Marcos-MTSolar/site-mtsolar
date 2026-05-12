@@ -21,7 +21,7 @@ export default function Projects() {
     : projectsData.filter(p => p.tag === filter);
 
   return (
-    <section id="projects" className="py-24 bg-light">
+    <section id="projetos" className="py-24 bg-light">
       <div className="container mx-auto px-6">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="text-secondary font-black tracking-[0.2em] uppercase mb-4 block">Portfólio</span>
@@ -89,13 +89,15 @@ export default function Projects() {
         </motion.div>
 
         <div className="mt-20 text-center">
-          <a
-            href="#contact"
+          <button
+            onClick={() => {
+              document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })
+            }}
             className="inline-flex items-center gap-2 bg-secondary text-primary px-10 py-5 rounded-2xl font-black text-xl hover:bg-primary hover:text-white transition-all group shadow-xl shadow-secondary/10"
           >
             Solicite o seu projeto
             <ArrowRight className="group-hover:translate-x-2 transition-transform" />
-          </a>
+          </button>
         </div>
       </div>
     </section>
