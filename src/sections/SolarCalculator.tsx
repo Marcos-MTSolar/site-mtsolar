@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { Calculator, TrendingUp, Zap, Clock, ArrowRight, Loader2 } from 'lucide-react';
 
-type InputMode = 'kwh' | 'brl';
+type InputMode = 'kwh' | 'reais';
 
 export default function SolarCalculator() {
   const [mode, setMode] = useState<InputMode>('kwh');
   const [value, setValue] = useState(500);
   const [isCalculating, setIsCalculating] = useState(false);
-  const [showResult, setShowResult] = useState(false);
+  const [calculated, setCalculated] = useState(false);
 
   // Constants
   const TARIFF = 0.85;
@@ -17,129 +17,140 @@ export default function SolarCalculator() {
   const COST_PER_KWP = 4200;
   const LOSS_FACTOR = 0.80;
 
-  // Calculation Logic
-  const calculate = () => {
+  const handleCalculate = () => {
     setIsCalculating(true);
+    setCalculated(false);
+    
+    // Simple delay for UX
     setTimeout(() => {
       setIsCalculating(false);
-      setShowResult(true);
-    }, 800);
+      setCalculated(true);
+    }, 600);
   };
 
+  // Logic
   const consumptionKwh = mode === 'kwh' ? value : value / TARIFF;
   const kwp = Number((consumptionKwh / (SUN_HOURS * DAYS * LOSS_FACTOR)).toFixed(2));
   const panels = Math.ceil((kwp * 1000) / PANEL_WATTS);
-  const monthlySavings = consumptionKwh * TARIFF;
-  const annualSavings = monthlySavings * 12;
-  const roiMonths = Math.ceil((kwp * COST_PER_KWP) / monthlySavings);
+  const economy = consumptionKwh * TARIFF;
+  const roiMonths = Math.ceil((kwp * COST_PER_KWP) / economy);
 
   return (
-    <section id="calculator" className="py-24 bg-gradient-to-br from-[#0F1E3D] to-[#1B2F5E] text-white overflow-hidden">
+    <section id="calculator" className="py-24 bg-[#0F1E3D] text-white">
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-16">
+          <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-black mb-6">
-              Descubra quanto você pode <span className="text-secondary">economizar</span>
+              Simule sua <span className="text-secondary">Economia</span>
             </h2>
             <p className="text-gray-400 text-lg">
-              Simule o tamanho do seu sistema e o tempo de retorno do seu investimento em segundos.
+              Descubra o potencial do sol para reduzir sua conta de energia.
             </p>
           </div>
 
-          <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[3rem] p-8 md:p-12 shadow-2xl">
-            <div className="flex flex-col gap-10">
-              {/* Input Section */}
-              <div className="space-y-8">
-                <div className="flex justify-center">
-                  <div className="bg-white/10 p-1.5 rounded-2xl flex gap-2">
-                    <button
-                      onClick={() => setMode('kwh')}
-                      className={`px-6 py-2.5 rounded-xl font-bold transition-all ${mode === 'kwh' ? 'bg-secondary text-primary shadow-lg' : 'hover:bg-white/5'}`}
-                    >
-                      Informar em kWh
-                    </button>
-                    <button
-                      onClick={() => setMode('brl')}
-                      className={`px-6 py-2.5 rounded-xl font-bold transition-all ${mode === 'brl' ? 'bg-secondary text-primary shadow-lg' : 'hover:bg-white/5'}`}
-                    >
-                      Informar em R$
-                    </button>
-                  </div>
+          <div className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 md:p-12 shadow-2xl">
+            <div className="space-y-10">
+              {/* Toggle Mode */}
+              <div className="flex justify-center">
+                <div className="bg-white/10 p-1 rounded-2xl flex gap-1">
+                  <button
+                    onClick={() => { setMode('kwh'); setCalculated(false); }}
+                    className={`px-6 py-2 rounded-xl font-bold transition-all duration-300 ${mode === 'kwh' ? 'bg-secondary text-primary' : 'hover:bg-white/5'}`}
+                  >
+                    Uso em kWh
+                  </button>
+                  <button
+                    onClick={() => { setMode('reais'); setCalculated(false); }}
+                    className={`px-6 py-2 rounded-xl font-bold transition-all duration-300 ${mode === 'reais' ? 'bg-secondary text-primary' : 'hover:bg-white/5'}`}
+                  >
+                    Valor em R$
+                  </button>
                 </div>
-
-                <div className="space-y-6">
-                  <div className="flex flex-col md:flex-row items-center gap-8">
-                    <div className="flex-1 w-full space-y-4">
-                      <div className="flex justify-between font-bold text-xl">
-                        <span>{mode === 'kwh' ? 'Consumo Mensal' : 'Valor da Conta'}</span>
-                        <span className="text-secondary">{mode === 'kwh' ? `${value} kWh` : `R$ ${value}`}</span>
-                      </div>
-                      <input
-                        type="range"
-                        min={mode === 'kwh' ? 100 : 150}
-                        max={mode === 'kwh' ? 2000 : 3000}
-                        step={mode === 'kwh' ? 50 : 50}
-                        value={value}
-                        onChange={(e) => setValue(Number(e.target.value))}
-                        className="w-full h-3 bg-white/10 rounded-lg appearance-none cursor-pointer accent-secondary"
-                      />
-                    </div>
-                    <div className="w-full md:w-48">
-                      <input
-                        type="number"
-                        value={value}
-                        onChange={(e) => setValue(Number(e.target.value))}
-                        className="w-full bg-white/10 border border-white/20 rounded-2xl px-6 py-4 text-2xl font-black text-center focus:border-secondary outline-none transition-all"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <button
-                  onClick={calculate}
-                  disabled={isCalculating}
-                  className="w-full bg-secondary text-primary py-5 rounded-2xl font-black text-2xl shadow-xl shadow-secondary/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
-                >
-                  {isCalculating ? (
-                    <Loader2 className="animate-spin" size={28} />
-                  ) : (
-                    <>
-                      Calcular Economia
-                      <Calculator size={28} />
-                    </>
-                  )}
-                </button>
               </div>
 
-              {/* Results Section */}
-              {showResult && (
-                <div className="pt-12 border-t border-white/10 space-y-10 animate-slide-up">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {[
-                      { icon: <Zap size={24} />, label: 'Potência Total', value: `${kwp.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} kWp` },
-                      { icon: <Calculator size={24} />, label: 'Nº de Painéis', value: `${panels} unid.` },
-                      { icon: <TrendingUp size={24} />, label: 'Economia Mensal', value: `R$ ${monthlySavings.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}` },
-                      { icon: <Clock size={24} />, label: 'Retorno (ROI)', value: `${roiMonths} meses` },
-                    ].map((item, i) => (
-                      <div key={i} className="bg-white p-8 rounded-[2rem] border-2 border-secondary/50 text-primary shadow-xl">
-                        <div className="text-secondary mb-4">{item.icon}</div>
-                        <p className="text-xs font-black uppercase tracking-widest text-gray-400 mb-1">{item.label}</p>
-                        <p className="text-2xl font-black">{item.value}</p>
-                      </div>
-                    ))}
+              {/* Slider & Input */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-8 items-end">
+                <div className="md:col-span-3 space-y-4">
+                  <div className="flex justify-between font-bold text-xl">
+                    <span>{mode === 'kwh' ? 'Consumo Mensal' : 'Valor da Conta'}</span>
+                    <span className="text-secondary">
+                      {mode === 'kwh' ? `${value} kWh` : `R$ ${value.toLocaleString('pt-BR')}`}
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min={mode === 'kwh' ? 100 : 150}
+                    max={mode === 'kwh' ? 2500 : 3500}
+                    step={50}
+                    value={value}
+                    onChange={(e) => { setValue(Number(e.target.value)); setCalculated(false); }}
+                    className="w-full h-3 bg-white/10 rounded-lg appearance-none cursor-pointer accent-secondary"
+                  />
+                </div>
+                <div className="md:col-span-1">
+                  <input
+                    type="number"
+                    value={value}
+                    onChange={(e) => { setValue(Number(e.target.value)); setCalculated(false); }}
+                    className="w-full bg-white/10 border border-white/20 rounded-2xl px-6 py-4 text-2xl font-black text-center focus:border-secondary outline-none transition-all duration-300"
+                  />
+                </div>
+              </div>
+
+              {/* CTA Button */}
+              <button
+                onClick={handleCalculate}
+                disabled={isCalculating}
+                className="w-full bg-secondary text-primary py-5 rounded-2xl font-black text-xl shadow-xl hover:scale-[1.01] active:scale-95 transition-all duration-300 flex items-center justify-center gap-3 disabled:opacity-50"
+              >
+                {isCalculating ? (
+                  <Loader2 className="animate-spin" size={28} />
+                ) : (
+                  <>
+                    Calcular Agora
+                    <Calculator size={28} />
+                  </>
+                )}
+              </button>
+
+              {/* Result Area */}
+              {calculated && (
+                <div className="pt-10 border-t border-white/10 space-y-8 transition-all duration-500 ease-in-out">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <ResultCard 
+                      icon={<Zap size={20} />} 
+                      label="Potência" 
+                      value={`${kwp.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} kWp`} 
+                    />
+                    <ResultCard 
+                      icon={<Calculator size={20} />} 
+                      label="Painéis" 
+                      value={`${panels} unid.`} 
+                    />
+                    <ResultCard 
+                      icon={<TrendingUp size={20} />} 
+                      label="Economia" 
+                      value={`R$ ${economy.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}`} 
+                    />
+                    <ResultCard 
+                      icon={<Clock size={20} />} 
+                      label="Retorno" 
+                      value={`${roiMonths} meses`} 
+                    />
                   </div>
 
-                  <div className="bg-secondary/10 border border-secondary/30 rounded-3xl p-8 text-center">
-                    <p className="text-lg font-bold mb-6">
-                      Economia anual estimada: <span className="text-secondary">R$ {annualSavings.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}</span>. 
-                      Sistema de <span className="text-secondary">{kwp.toLocaleString('pt-BR')} kWp</span> com <span className="text-secondary">{panels} painéis</span>.
+                  <div className="bg-secondary/10 border border-secondary/30 rounded-3xl p-8 text-center space-y-6">
+                    <p className="text-xl font-bold">
+                      Economia estimada de <span className="text-secondary">R$ {(economy * 12).toLocaleString('pt-BR', { maximumFractionDigits: 0 })}</span> por ano!
                     </p>
                     <a
-                      href="#contact"
-                      className="bg-secondary text-primary px-10 py-5 rounded-2xl font-black text-xl hover:bg-white transition-all inline-flex items-center gap-3 group"
+                      href="https://wa.me/5581997003260"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-3 bg-secondary text-primary px-10 py-4 rounded-2xl font-black text-xl hover:bg-white transition-all duration-300"
                     >
-                      Quero um orçamento gratuito
-                      <ArrowRight className="group-hover:translate-x-2 transition-transform" />
+                      Solicitar Orçamento Gratuito
+                      <ArrowRight size={24} />
                     </a>
                   </div>
                 </div>
@@ -149,5 +160,15 @@ export default function SolarCalculator() {
         </div>
       </div>
     </section>
+  );
+}
+
+function ResultCard({ icon, label, value }: { icon: React.ReactNode, label: string, value: string }) {
+  return (
+    <div className="bg-white p-6 rounded-[2rem] text-primary shadow-xl border-b-4 border-secondary">
+      <div className="text-secondary mb-2">{icon}</div>
+      <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">{label}</p>
+      <p className="text-xl font-black">{value}</p>
+    </div>
   );
 }
