@@ -9,7 +9,16 @@ export default function Footer() {
           {/* Logo + Description */}
           <div className="space-y-8">
             <a href="#hero" className="flex items-center gap-2">
-              <img src={logo} alt="MT Solar" className="h-12 w-auto" />
+              <img 
+                src={logo} 
+                alt="MT Solar" 
+                className="h-14 w-auto" 
+                style={{
+                  background: 'white',
+                  borderRadius: '8px',
+                  padding: '6px 10px'
+                }}
+              />
             </a>
             <p className="text-gray-400 text-lg leading-relaxed max-w-sm">
               Líder em soluções de energia fotovoltaica para residências, comércios e escolas em todo o Nordeste brasileiro.
