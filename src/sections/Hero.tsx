@@ -37,7 +37,7 @@ export default function Hero() {
                 Simule seu sistema →
               </a>
               <a
-                href="https://wa.me/5581997003260"
+                href="https://wa.me/5581997003260?text=Olá!%20Vim%20pelo%20site%20mtsolarpe.com.br%20e%20gostaria%20de%20solicitar%20um%20orçamento%20de%20energia%20solar."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-[#25D366] border-2 border-[#25D366] text-white px-10 py-5 rounded-2xl font-black text-xl hover:bg-[#128C7E] hover:border-[#128C7E] transition-all flex items-center justify-center gap-3"
