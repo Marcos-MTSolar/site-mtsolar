@@ -63,11 +63,16 @@ export default function Footer() {
                 <div className="bg-white/5 p-3 rounded-xl text-secondary">
                   <MapPin size={20} />
                 </div>
-                <span className="font-medium">
+                <a 
+                  href="https://maps.google.com/?q=Rua+Rossini+Roosevelt+de+Albuquerque,+10,+Sala+103,+Piedade,+Jaboatão+dos+Guararapes,+PE"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium hover:text-secondary hover:underline transition-all"
+                >
                   Rua Rossini Roosevelt de Albuquerque, 10, Sala 103<br/>
                   Piedade, Jaboatão dos Guararapes - PE<br/>
                   CEP: 54410-310
-                </span>
+                </a>
               </li>
               <li className="flex items-center gap-4 text-gray-400">
                 <div className="bg-white/5 p-3 rounded-xl text-secondary">
