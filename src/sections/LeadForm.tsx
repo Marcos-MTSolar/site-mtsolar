@@ -28,24 +28,16 @@ export default function LeadForm() {
     e.preventDefault();
     if (!validate()) return;
 
-    setStatus('loading');
+    const { name, whatsapp, location, type, consumption, message: messageExtra } = formData;
+    
+    const mensagem = `🌞 *Novo Lead - MT Solar*\n\n👤 *Nome:* ${name}\n📱 *WhatsApp:* ${whatsapp}\n📍 *Cidade/UF:* ${location}\n🏠 *Tipo:* ${type}\n⚡ *Consumo:* ${consumption || '0'} kWh/mês\n💬 ${messageExtra || 'Sem mensagem'}\n---\n_Enviado pelo site mtsolarpe.com.br_`;
 
-    const message = `🌞 Novo Lead - MT Solar\n` +
-      `👤 Nome: ${formData.name}\n` +
-      `📱 WhatsApp: ${formData.whatsapp}\n` +
-      `📍 Cidade/UF: ${formData.location}\n` +
-      `🏠 Tipo: ${formData.type}\n` +
-      `⚡ Consumo: ${formData.consumption || 'Não informado'} kWh/mês\n` +
-      `💬 ${formData.message || 'Sem mensagem'}\n` +
-      `Enviado pelo site mtsolarpe.com.br`;
-
-    const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/5581997003260?text=${encodedMessage}`;
+    const url = `https://wa.me/5581997003260?text=${encodeURIComponent(mensagem)}`;
 
     setTimeout(() => {
-      window.open(whatsappUrl, '_blank');
+      window.open(url, '_blank');
       setStatus('success');
-    }, 1000);
+    }, 800);
   };
 
   const resetForm = () => {
@@ -74,7 +66,7 @@ export default function LeadForm() {
 
         <div className="max-w-[600px] mx-auto">
           {status === 'success' ? (
-            <div className="bg-emerald-50 border-2 border-emerald-100 p-12 rounded-[3rem] text-center animate-slide-up">
+            <div className="bg-emerald-50 border-2 border-emerald-100 p-12 rounded-[3rem] text-center">
               <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
                 <CheckCircle size={48} />
               </div>
