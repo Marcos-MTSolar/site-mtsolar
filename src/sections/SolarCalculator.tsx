@@ -10,11 +10,12 @@ export default function SolarCalculator() {
   const [showResult, setShowResult] = useState(false);
 
   // Constants
-  const TARIFF = 0.75;
-  const SUN_HOURS = 4.5;
+  const TARIFF = 0.85;
+  const SUN_HOURS = 5.0;
   const DAYS = 30;
   const PANEL_WATTS = 550;
-  const COST_PER_KWP = 3500;
+  const COST_PER_KWP = 4200;
+  const LOSS_FACTOR = 0.80;
 
   // Calculation Logic
   const calculate = () => {
@@ -26,9 +27,10 @@ export default function SolarCalculator() {
   };
 
   const consumptionKwh = mode === 'kwh' ? value : value / TARIFF;
-  const kwp = Number((consumptionKwh / (SUN_HOURS * DAYS)).toFixed(1));
-  const panels = Math.ceil(kwp / (PANEL_WATTS / 1000));
-  const monthlySavings = consumptionKwh * TARIFF * 0.90;
+  const kwp = Number((consumptionKwh / (SUN_HOURS * DAYS * LOSS_FACTOR)).toFixed(2));
+  const panels = Math.ceil((kwp * 1000) / PANEL_WATTS);
+  const monthlySavings = consumptionKwh * TARIFF;
+  const annualSavings = monthlySavings * 12;
   const roiMonths = Math.ceil((kwp * COST_PER_KWP) / monthlySavings);
 
   return (
@@ -114,8 +116,8 @@ export default function SolarCalculator() {
                 <div className="pt-12 border-t border-white/10 space-y-10 animate-slide-up">
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     {[
-                      { icon: <Zap size={24} />, label: 'Potência Total', value: `${kwp} kWp` },
-                      { icon: <Calculator size={24} />, label: 'Nº de Painéis', value: panels },
+                      { icon: <Zap size={24} />, label: 'Potência Total', value: `${kwp.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} kWp` },
+                      { icon: <Calculator size={24} />, label: 'Nº de Painéis', value: `${panels} unid.` },
                       { icon: <TrendingUp size={24} />, label: 'Economia Mensal', value: `R$ ${monthlySavings.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}` },
                       { icon: <Clock size={24} />, label: 'Retorno (ROI)', value: `${roiMonths} meses` },
                     ].map((item, i) => (
@@ -129,7 +131,8 @@ export default function SolarCalculator() {
 
                   <div className="bg-secondary/10 border border-secondary/30 rounded-3xl p-8 text-center">
                     <p className="text-lg font-bold mb-6">
-                      Sistema estimado: <span className="text-secondary">{kwp} kWp</span> com <span className="text-secondary">{panels} painéis</span> de 550W.
+                      Economia anual estimada: <span className="text-secondary">R$ {annualSavings.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}</span>. 
+                      Sistema de <span className="text-secondary">{kwp.toLocaleString('pt-BR')} kWp</span> com <span className="text-secondary">{panels} painéis</span>.
                     </p>
                     <a
                       href="#contact"
