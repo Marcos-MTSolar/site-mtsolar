@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { cn } from '../lib/utils';
+import logo from '../assets/logo-mtsolar.png';
 
 const navLinks = [
   { name: 'Quem Somos', href: '#about' },
@@ -32,10 +33,7 @@ export default function Header() {
       <div className="container mx-auto px-6 flex items-center justify-between">
         {/* Logo */}
         <a href="#hero" className="flex items-center gap-3">
-          <img src="/favicon.svg" alt="MT Solar Logo" className="h-10 w-auto" />
-          <span className="text-2xl font-black tracking-tighter">
-            <span className="text-primary">MT</span> <span className="text-secondary">SOLAR</span>
-          </span>
+          <img src={logo} alt="MT Solar" className="h-10 w-auto" />
         </a>
 
         {/* Desktop Nav */}

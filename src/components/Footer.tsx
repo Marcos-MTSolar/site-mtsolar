@@ -1,4 +1,5 @@
 import { Globe, MapPin, Phone } from 'lucide-react';
+import logo from '../assets/logo-mtsolar.png';
 
 export default function Footer() {
   return (
@@ -8,9 +9,7 @@ export default function Footer() {
           {/* Logo + Description */}
           <div className="space-y-8">
             <a href="#hero" className="flex items-center gap-2">
-              <span className="text-3xl font-black tracking-tighter">
-                <span className="text-white">MT</span> <span className="text-secondary">SOLAR</span>
-              </span>
+              <img src={logo} alt="MT Solar" className="h-12 w-auto" />
             </a>
             <p className="text-gray-400 text-lg leading-relaxed max-w-sm">
               Líder em soluções de energia fotovoltaica para residências, comércios e escolas em todo o Nordeste brasileiro.
