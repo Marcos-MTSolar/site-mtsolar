@@ -1,6 +1,5 @@
 import { useState, type FormEvent } from 'react';
 import { CheckCircle, MessageSquare, Loader2 } from 'lucide-react';
-import { motion } from 'motion/react';
 
 export default function LeadForm() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');

@@ -1,4 +1,4 @@
-import { ArrowRight, MessageCircle, Zap } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 import { motion } from 'motion/react';
 
 export default function Hero() {
