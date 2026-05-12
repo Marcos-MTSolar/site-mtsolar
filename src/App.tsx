@@ -17,8 +17,8 @@ function App() {
         <AboutUs />
         <Services />
         <SolarCalculator />
-        <LeadForm />
         <Projects />
+        <LeadForm />
       </main>
       <Footer />
       <WhatsAppButton />

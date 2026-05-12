@@ -32,7 +32,7 @@ export default function LeadForm() {
     
     const mensagem = `🌞 *Novo Lead - MT Solar*\n\n👤 *Nome:* ${name}\n📱 *WhatsApp:* ${whatsapp}\n📍 *Cidade/UF:* ${location}\n🏠 *Tipo:* ${type}\n⚡ *Consumo:* ${consumption || '0'} kWh/mês\n💬 ${messageExtra || 'Sem mensagem'}\n---\n_Enviado pelo site mtsolarpe.com.br_`;
 
-    const url = `https://wa.me/5581997003260?text=${encodeURIComponent(mensagem)}`;
+    const url = `https://wa.me/5581986349054?text=${encodeURIComponent(mensagem)}`;
 
     setTimeout(() => {
       window.open(url, '_blank');

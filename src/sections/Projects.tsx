@@ -1,103 +1,70 @@
-import { useState } from 'react';
-import { Sun, MapPin, ArrowRight } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import React from 'react';
+import { MapPin } from 'lucide-react';
 
-const categories = ['Todos', 'Residencial', 'Comercial', 'Escolas', 'Usinas'];
+// Importando as imagens reais
+import obraArte from '../assets/projetos/obra-arte-do-saber.jpeg';
+import obraFazenda1 from '../assets/projetos/obra-fazenda-solo-1.jpeg';
+import obraFazenda2 from '../assets/projetos/obra-fazenda-solo-2.jpeg';
+import obraResidencial from '../assets/projetos/obra-residencial-recife.jpeg';
+import obraRuy1 from '../assets/projetos/obra-ruy-barbosa-1.jpeg';
+import obraRuy2 from '../assets/projetos/obra-ruy-barbosa-2.jpeg';
+import obraSubestacao from '../assets/projetos/obra-subestacao.jpeg';
+import obraUsinaGrande from '../assets/projetos/obra-usina-grande.jpeg';
 
 const projectsData = [
-  { id: 1, title: 'Usina de Solo On-grid', location: 'Pernambuco', tag: 'Usinas' },
-  { id: 2, title: 'Escola Rui Barbosa', location: 'Recife-PE', tag: 'Escolas' },
-  { id: 3, title: 'Escola Anita Garibaldi', location: 'Pernambuco', tag: 'Escolas' },
-  { id: 4, title: 'Escola Arte do Saber', location: 'Pernambuco', tag: 'Escolas' },
-  { id: 5, title: 'Escola Soberano', location: 'Pernambuco', tag: 'Escolas' },
-  { id: 6, title: 'Residencial com Piscina', location: 'Pernambuco', tag: 'Residencial' },
+  { id: 1, title: 'Arte do Saber', location: 'Escola - Pernambuco', image: obraArte, tag: 'Educação' },
+  { id: 2, title: 'Fazenda Solar I', location: 'Usinas - Nordeste', image: obraFazenda1, tag: 'Agronegócio' },
+  { id: 3, title: 'Fazenda Solar II', location: 'Usinas - Nordeste', image: obraFazenda2, tag: 'Agronegócio' },
+  { id: 4, title: 'Residencial Recife', location: 'Recife - PE', image: obraResidencial, tag: 'Residencial' },
+  { id: 5, title: 'Escola Ruy Barbosa I', location: 'Recife - PE', image: obraRuy1, tag: 'Educação' },
+  { id: 6, title: 'Escola Ruy Barbosa II', location: 'Recife - PE', image: obraRuy2, tag: 'Educação' },
+  { id: 7, title: 'Subestação Elétrica', location: 'Infraestrutura', image: obraSubestacao, tag: 'Indústria' },
+  { id: 8, title: 'Usina Industrial', location: 'Grande Escala', image: obraUsinaGrande, tag: 'Usinas' },
 ];
 
 export default function Projects() {
-  const [filter, setFilter] = useState('Todos');
-
-  const filteredProjects = filter === 'Todos' 
-    ? projectsData 
-    : projectsData.filter(p => p.tag === filter);
-
   return (
-    <section id="projetos" className="py-24 bg-light">
+    <section id="projetos" className="py-24 bg-[#1B2F5E]">
       <div className="container mx-auto px-6">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-secondary font-black tracking-[0.2em] uppercase mb-4 block">Portfólio</span>
-          <h2 className="text-4xl md:text-5xl font-black text-primary mb-6">Nossos Projetos</h2>
-          <p className="text-gray-500 text-lg">
-            Instalações realizadas em Pernambuco, Alagoas e Paraíba, levando economia e sustentabilidade para diversas regiões.
+          <span className="text-[#F5A623] font-black tracking-[0.2em] uppercase mb-4 block">Portfólio</span>
+          <h2 className="text-4xl md:text-5xl font-black text-white mb-6">Projetos Realizados</h2>
+          <p className="text-gray-300 text-lg">
+            Energia solar de verdade no Nordeste. Conheça algumas de nossas instalações de alta performance.
           </p>
         </div>
 
-        {/* Filter Tabs */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setFilter(cat)}
-              className={`px-8 py-3 rounded-full font-bold transition-all ${
-                filter === cat 
-                ? 'bg-primary text-white shadow-lg' 
-                : 'bg-white text-gray-400 hover:text-primary border border-gray-100 shadow-sm'
-              }`}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {projectsData.map((project) => (
+            <div 
+              key={project.id}
+              className="group relative bg-white/5 rounded-[2rem] overflow-hidden border border-white/10 hover:border-[#F5A623] transition-all duration-500"
             >
-              {cat}
-            </button>
+              {/* Image Container with CSS Zoom */}
+              <div className="relative h-64 overflow-hidden">
+                <img 
+                  src={project.image} 
+                  alt={project.title}
+                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                />
+                <div className="absolute top-4 left-4">
+                  <span className="bg-[#F5A623] text-[#1B2F5E] px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg">
+                    {project.tag}
+                  </span>
+                </div>
+              </div>
+
+              <div className="p-6">
+                <div className="flex items-center gap-2 text-[#F5A623] text-sm mb-2">
+                  <MapPin size={14} />
+                  <span className="font-medium opacity-80">{project.location}</span>
+                </div>
+                <h3 className="text-xl font-bold text-white group-hover:text-[#F5A623] transition-colors">
+                  {project.title}
+                </h3>
+              </div>
+            </div>
           ))}
-        </div>
-
-        {/* Projects Grid */}
-        <motion.div 
-          layout
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
-          <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project) => (
-              <motion.div
-                key={project.id}
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3 }}
-                className="group bg-white rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all border border-gray-50"
-              >
-                {/* Image Placeholder */}
-                <div className="relative h-60 bg-gradient-to-br from-primary to-dark flex items-center justify-center overflow-hidden">
-                  <Sun size={64} className="text-secondary/20 group-hover:scale-125 transition-transform duration-700" />
-                  <div className="absolute top-4 left-4">
-                    <span className="bg-secondary text-primary px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest shadow-lg">
-                      {project.tag}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="p-8">
-                  <div className="flex items-center gap-2 text-gray-400 text-sm mb-3">
-                    <MapPin size={14} className="text-secondary" />
-                    <span>{project.location}</span>
-                  </div>
-                  <h3 className="text-xl font-bold text-primary group-hover:text-secondary transition-colors">
-                    {project.title}
-                  </h3>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
-
-        <div className="mt-20 text-center">
-          <button
-            onClick={() => {
-              document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })
-            }}
-            className="inline-flex items-center gap-2 bg-secondary text-primary px-10 py-5 rounded-2xl font-black text-xl hover:bg-primary hover:text-white transition-all group shadow-xl shadow-secondary/10"
-          >
-            Solicite o seu projeto
-            <ArrowRight className="group-hover:translate-x-2 transition-transform" />
-          </button>
         </div>
       </div>
     </section>

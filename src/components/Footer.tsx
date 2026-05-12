@@ -78,9 +78,14 @@ export default function Footer() {
                 <div className="bg-white/5 p-3 rounded-xl text-secondary">
                   <Phone size={20} />
                 </div>
-                <div className="flex flex-col">
-                  <span className="font-bold text-white">(81) 99700-3260</span>
-                  <a href="mailto:mtsolar.energia@gmail.com" style={{color: 'inherit'}} className="text-sm hover:text-secondary transition-colors">
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-white tracking-wider">📱 (81) 99700-3260</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-white tracking-wider">📱 (81) 98634-9054</span>
+                  </div>
+                  <a href="mailto:mtsolar.energia@gmail.com" style={{color: 'inherit'}} className="text-sm hover:text-secondary transition-colors mt-1">
                     ✉️ mtsolar.energia@gmail.com
                   </a>
                 </div>
