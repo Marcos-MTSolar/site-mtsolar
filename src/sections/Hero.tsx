@@ -1,6 +1,14 @@
-import { motion } from 'motion/react';
+import { Sun } from 'lucide-react';
 
 export default function Hero() {
+  const scrollToCalculator = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const target = document.getElementById('calculadora');
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section id="hero" className="relative min-h-screen flex items-center pt-24 overflow-hidden bg-gradient-to-br from-[#0F1E3D] to-[#1B2F5E]">
       {/* Visual Overlay - Solar Panel Texture Simulation */}
@@ -11,13 +19,9 @@ export default function Hero() {
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-4xl">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
+          <div className="animate-in fade-in slide-in-from-bottom-8 duration-1000">
             <div className="inline-flex items-center gap-2 bg-secondary/20 backdrop-blur-md px-5 py-2.5 rounded-full text-secondary text-xs font-black uppercase tracking-widest mb-8 border border-secondary/30">
-              <span role="img" aria-label="sun">☀️</span>
+              <Sun size={14} className="animate-pulse" />
               <span>+5 anos de experiência da equipe | Projetos residenciais, comerciais e industriais</span>
             </div>
             
@@ -31,7 +35,8 @@ export default function Hero() {
 
             <div className="flex flex-col sm:flex-row gap-5">
               <a
-                href="#calculator"
+                href="#calculadora"
+                onClick={scrollToCalculator}
                 className="bg-secondary text-primary px-10 py-5 rounded-2xl font-black text-xl shadow-2xl shadow-secondary/20 hover:bg-white hover:scale-105 transition-all flex items-center justify-center gap-3 group"
               >
                 Simule seu sistema →
@@ -46,7 +51,7 @@ export default function Hero() {
                 Fale no WhatsApp
               </a>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
 

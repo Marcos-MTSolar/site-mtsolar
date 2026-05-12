@@ -5,18 +5,24 @@ type InputMode = 'kwh' | 'reais';
 
 export default function SolarCalculator() {
   const [mode, setMode] = useState<InputMode>('kwh');
-  const [value, setValue] = useState(500);
-  const [isCalculating, setIsCalculating] = useState(false);
-  const [calculated, setCalculated] = useState(false);
+  const [value, setValue] = useState<number>(500);
+  const [isCalculating, setIsCalculating] = useState<boolean>(false);
+  const [calculated, setCalculated] = useState<boolean>(false);
 
   // Constantes baseadas nas fórmulas solicitadas
   const TARIFF = 0.85;
+  const HSP = 5.0;
+  const LOSS_FACTOR = 0.80;
+  const PANEL_POWER = 585;
+  const COST_PER_KWP = 4200;
 
   const handleCalculate = () => {
+    if (!value || value <= 0) return;
+    
     setIsCalculating(true);
     setCalculated(false);
     
-    // Delay simples apenas para feedback visual (sem animação pesada)
+    // Feedback visual sem bibliotecas externas
     setTimeout(() => {
       setIsCalculating(false);
       setCalculated(true);
@@ -30,26 +36,27 @@ export default function SolarCalculator() {
     }
   };
 
-  // Lógica de Cálculo (Fórmulas solicitadas)
-  const consumo = mode === 'kwh' ? value : value / TARIFF;
+  // Lógica de Cálculo Robusta
+  const safeValue = value || 0;
+  const consumo = mode === 'kwh' ? safeValue : safeValue / TARIFF;
   
-  // kwp = consumo / (5.0 * 30 * 0.80)
-  const kwp = consumo / (5.0 * 30 * 0.80);
+  // kwp = consumo / (HSP * 30 * LOSS_FACTOR)
+  const kwp = consumo / (HSP * 30 * LOSS_FACTOR);
   
-  // paineis = Math.ceil((kwp * 1000) / 585)
-  const paineis = Math.ceil((kwp * 1000) / 585);
+  // paineis = Math.ceil((kwp * 1000) / PANEL_POWER)
+  const paineis = Math.ceil((kwp * 1000) / PANEL_POWER) || 0;
   
-  // kwpReal = (paineis * 585) / 1000
-  const kwpReal = (paineis * 585) / 1000;
+  // kwpReal = (paineis * PANEL_POWER) / 1000
+  const kwpReal = (paineis * PANEL_POWER) / 1000;
   
-  // economiaMensal = consumo * 0.85
-  const economiaMensal = consumo * 0.85;
+  // economiaMensal = consumo * TARIFF
+  const economiaMensal = consumo * TARIFF;
   
   // economiaAnual = economiaMensal * 12
   const economiaAnual = economiaMensal * 12;
   
-  // retorno = Math.round((kwpReal * 4200) / economiaMensal)
-  const retorno = Math.round((kwpReal * 4200) / economiaMensal);
+  // retorno = Math.round((kwpReal * COST_PER_KWP) / economiaMensal)
+  const retorno = economiaMensal > 0 ? Math.round((kwpReal * COST_PER_KWP) / economiaMensal) : 0;
 
   return (
     <section id="calculadora" className="py-20 bg-[#0F1E3D] text-white">
@@ -71,13 +78,13 @@ export default function SolarCalculator() {
                 <div className="bg-white/5 p-1 rounded-xl flex gap-1 border border-white/5">
                   <button
                     onClick={() => { setMode('kwh'); setCalculated(false); }}
-                    className={`px-5 py-2 rounded-lg font-bold transition-opacity duration-300 ${mode === 'kwh' ? 'bg-secondary text-primary' : 'text-gray-300'}`}
+                    className={`px-5 py-2 rounded-lg font-bold transition-all duration-300 ${mode === 'kwh' ? 'bg-secondary text-primary' : 'text-gray-300 hover:text-white'}`}
                   >
                     Uso em kWh
                   </button>
                   <button
                     onClick={() => { setMode('reais'); setCalculated(false); }}
-                    className={`px-5 py-2 rounded-lg font-bold transition-opacity duration-300 ${mode === 'reais' ? 'bg-secondary text-primary' : 'text-gray-300'}`}
+                    className={`px-5 py-2 rounded-lg font-bold transition-all duration-300 ${mode === 'reais' ? 'bg-secondary text-primary' : 'text-gray-300 hover:text-white'}`}
                   >
                     Valor em R$
                   </button>
@@ -90,7 +97,7 @@ export default function SolarCalculator() {
                   <div className="flex justify-between font-bold text-lg">
                     <span>{mode === 'kwh' ? 'Consumo Mensal' : 'Valor da Conta'}</span>
                     <span className="text-secondary">
-                      {mode === 'kwh' ? `${value} kWh` : `R$ ${value.toLocaleString('pt-BR')}`}
+                      {mode === 'kwh' ? `${safeValue} kWh` : `R$ ${safeValue.toLocaleString('pt-BR')}`}
                     </span>
                   </div>
                   <input
@@ -98,7 +105,7 @@ export default function SolarCalculator() {
                     min={mode === 'kwh' ? 100 : 150}
                     max={mode === 'kwh' ? 3000 : 5000}
                     step={50}
-                    value={value}
+                    value={safeValue}
                     onChange={(e) => { setValue(Number(e.target.value)); setCalculated(false); }}
                     className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-secondary"
                   />
@@ -106,8 +113,13 @@ export default function SolarCalculator() {
                 <div className="md:col-span-1">
                   <input
                     type="number"
-                    value={value}
-                    onChange={(e) => { setValue(Number(e.target.value)); setCalculated(false); }}
+                    value={value || ''}
+                    onChange={(e) => { 
+                      const val = e.target.value === '' ? 0 : Number(e.target.value);
+                      setValue(val); 
+                      setCalculated(false); 
+                    }}
+                    placeholder="0"
                     className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xl font-bold text-center focus:border-secondary outline-none text-white"
                   />
                 </div>
@@ -116,8 +128,8 @@ export default function SolarCalculator() {
               {/* Botão de Calcular */}
               <button
                 onClick={handleCalculate}
-                disabled={isCalculating}
-                className="w-full bg-secondary text-primary py-4 rounded-xl font-black text-xl shadow-md transition-opacity duration-300 flex items-center justify-center gap-2 disabled:opacity-50"
+                disabled={isCalculating || !value || value <= 0}
+                className="w-full bg-secondary text-primary py-4 rounded-xl font-black text-xl shadow-md transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isCalculating ? 'CALCULANDO...' : (
                   <>
@@ -128,47 +140,45 @@ export default function SolarCalculator() {
               </button>
 
               {/* Área de Resultados */}
-              <div className={`transition-opacity duration-500 ease-in-out ${calculated ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden'}`}>
-                {calculated && (
-                  <div className="pt-8 border-t border-white/5 space-y-8">
-                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-                      <ResultCard 
-                        icon={<Zap size={18} />} 
-                        label="Potência" 
-                        value={`${kwpReal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} kWp`} 
-                      />
-                      <ResultCard 
-                        icon={<Calculator size={18} />} 
-                        label="Painéis" 
-                        value={`${paineis} un.`} 
-                      />
-                      <ResultCard 
-                        icon={<TrendingUp size={18} />} 
-                        label="Economia" 
-                        value={`R$ ${economiaMensal.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}`} 
-                      />
-                      <ResultCard 
-                        icon={<Clock size={18} />} 
-                        label="Retorno" 
-                        value={`${retorno} meses`} 
-                      />
-                    </div>
-
-                    <div className="bg-secondary/5 border border-secondary/20 rounded-2xl p-6 text-center space-y-4">
-                      <p className="text-lg font-bold">
-                        Economia estimada de <span className="text-secondary">R$ {economiaAnual.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}</span> por ano!
-                      </p>
-                      <button
-                        onClick={scrollToForm}
-                        className="inline-flex items-center gap-2 bg-secondary text-primary px-8 py-3 rounded-xl font-black text-lg transition-opacity duration-300 hover:opacity-90"
-                      >
-                        Solicitar Orçamento
-                        <ArrowRight size={20} />
-                      </button>
-                    </div>
+              {calculated && (
+                <div className="pt-8 border-t border-white/5 space-y-8 animate-in fade-in duration-700">
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                    <ResultCard 
+                      icon={<Zap size={18} />} 
+                      label="Potência" 
+                      value={`${kwpReal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} kWp`} 
+                    />
+                    <ResultCard 
+                      icon={<Calculator size={18} />} 
+                      label="Painéis" 
+                      value={`${paineis} un.`} 
+                    />
+                    <ResultCard 
+                      icon={<TrendingUp size={18} />} 
+                      label="Economia" 
+                      value={`R$ ${economiaMensal.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}`} 
+                    />
+                    <ResultCard 
+                      icon={<Clock size={18} />} 
+                      label="Retorno" 
+                      value={`${retorno} meses`} 
+                    />
                   </div>
-                )}
-              </div>
+
+                  <div className="bg-secondary/5 border border-secondary/20 rounded-2xl p-6 text-center space-y-4">
+                    <p className="text-lg font-bold">
+                      Economia estimada de <span className="text-secondary">R$ {economiaAnual.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}</span> por ano!
+                    </p>
+                    <button
+                      onClick={scrollToForm}
+                      className="inline-flex items-center gap-2 bg-secondary text-primary px-8 py-3 rounded-xl font-black text-lg transition-all duration-300 hover:scale-105"
+                    >
+                      Solicitar Orçamento
+                      <ArrowRight size={20} />
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
