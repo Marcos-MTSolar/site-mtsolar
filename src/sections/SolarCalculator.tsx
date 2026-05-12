@@ -30,10 +30,22 @@ export default function SolarCalculator() {
 
   // Logic
   const consumptionKwh = mode === 'kwh' ? value : value / TARIFF;
-  const kwp = Number((consumptionKwh / (SUN_HOURS * DAYS * LOSS_FACTOR)).toFixed(2));
+  
+  // kWp necessário
+  const kwp = consumptionKwh / (SUN_HOURS * DAYS * LOSS_FACTOR);
+  
+  // Número de painéis (arredondar para CIMA)
   const panels = Math.ceil((kwp * 1000) / PANEL_WATTS);
+  
+  // kWp REAL (baseado no número real de painéis)
+  const kwpReal = (panels * PANEL_WATTS) / 1000;
+  
+  // Economia
   const economy = consumptionKwh * TARIFF;
-  const roiMonths = Math.ceil((kwp * COST_PER_KWP) / economy);
+  const annualEconomy = economy * 12;
+  
+  // Retorno (ROI)
+  const roiMonths = Math.round((kwpReal * COST_PER_KWP) / economy);
 
   return (
     <section id="calculator" className="py-24 bg-[#0F1E3D] text-white">
@@ -120,7 +132,7 @@ export default function SolarCalculator() {
                     <ResultCard 
                       icon={<Zap size={20} />} 
                       label="Potência" 
-                      value={`${kwp.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} kWp`} 
+                      value={`${kwpReal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} kWp`} 
                     />
                     <ResultCard 
                       icon={<Calculator size={20} />} 
@@ -141,10 +153,10 @@ export default function SolarCalculator() {
 
                   <div className="bg-secondary/10 border border-secondary/30 rounded-3xl p-8 text-center space-y-6">
                     <p className="text-xl font-bold">
-                      Economia estimada de <span className="text-secondary">R$ {(economy * 12).toLocaleString('pt-BR', { maximumFractionDigits: 0 })}</span> por ano!
+                      Economia estimada de <span className="text-secondary">R$ {annualEconomy.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}</span> por ano!
                       <br/>
                       <span className="text-sm font-medium text-gray-400 mt-2 block">
-                        Sistema de {kwp.toLocaleString('pt-BR')} kWp com {panels} painéis de 585W.
+                        Sistema de {kwpReal.toLocaleString('pt-BR')} kWp com {panels} painéis de 585W.
                       </span>
                     </p>
                     <a
