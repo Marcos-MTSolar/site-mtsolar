@@ -13,7 +13,7 @@ export default function SolarCalculator() {
   const TARIFF = 0.85;
   const SUN_HOURS = 5.0;
   const DAYS = 30;
-  const PANEL_WATTS = 550;
+  const PANEL_WATTS = 585;
   const COST_PER_KWP = 4200;
   const LOSS_FACTOR = 0.80;
 
@@ -142,6 +142,10 @@ export default function SolarCalculator() {
                   <div className="bg-secondary/10 border border-secondary/30 rounded-3xl p-8 text-center space-y-6">
                     <p className="text-xl font-bold">
                       Economia estimada de <span className="text-secondary">R$ {(economy * 12).toLocaleString('pt-BR', { maximumFractionDigits: 0 })}</span> por ano!
+                      <br/>
+                      <span className="text-sm font-medium text-gray-400 mt-2 block">
+                        Sistema de {kwp.toLocaleString('pt-BR')} kWp com {panels} painéis de 585W.
+                      </span>
                     </p>
                     <a
                       href="https://wa.me/5581997003260"
