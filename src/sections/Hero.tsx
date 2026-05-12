@@ -18,8 +18,8 @@ export default function Hero() {
             transition={{ duration: 0.8 }}
           >
             <div className="inline-flex items-center gap-2 bg-secondary/20 backdrop-blur-md px-5 py-2.5 rounded-full text-secondary text-xs font-black uppercase tracking-widest mb-8 border border-secondary/30">
-              <Zap size={14} fill="currentColor" />
-              <span>+2 anos de experiência | Projetos residenciais, comerciais e industriais</span>
+              <span role="img" aria-label="sun">☀️</span>
+              <span>+5 anos de experiência da equipe | Projetos residenciais, comerciais e industriais</span>
             </div>
             
             <h1 className="text-5xl md:text-7xl font-black text-white leading-[1.1] mb-8">
@@ -27,7 +27,7 @@ export default function Hero() {
             </h1>
             
             <p className="text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed font-medium max-w-3xl">
-              Reduza sua conta de luz em até <span className="text-white font-bold">95%</span> com soluções fotovoltaicas sob medida.
+              Economize até <span className="text-white font-bold">95%</span> na conta de luz com sistemas fotovoltaicos instalados por especialistas. Atendimento completo do projeto à homologação.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-5">
@@ -35,14 +35,13 @@ export default function Hero() {
                 href="#calculator"
                 className="bg-secondary text-primary px-10 py-5 rounded-2xl font-black text-xl shadow-2xl shadow-secondary/20 hover:bg-white hover:scale-105 transition-all flex items-center justify-center gap-3 group"
               >
-                Simule seu sistema
-                <ArrowRight className="group-hover:translate-x-2 transition-transform" size={24} />
+                Simule seu sistema →
               </a>
               <a
                 href="https://wa.me/5581997003260"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-transparent border-2 border-white text-white px-10 py-5 rounded-2xl font-black text-xl hover:bg-white hover:text-primary transition-all flex items-center justify-center gap-3"
+                className="bg-white border-2 border-white text-primary px-10 py-5 rounded-2xl font-black text-xl hover:bg-secondary hover:text-primary transition-all flex items-center justify-center gap-3"
               >
                 <MessageCircle size={24} fill="currentColor" />
                 Fale no WhatsApp

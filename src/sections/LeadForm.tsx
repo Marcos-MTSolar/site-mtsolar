@@ -31,15 +31,14 @@ export default function LeadForm() {
 
     setStatus('loading');
 
-    const message = `🌞 *Novo Lead - MT Solar*\n\n` +
-      `👤 *Nome:* ${formData.name}\n` +
-      `📱 *WhatsApp:* ${formData.whatsapp}\n` +
-      `📍 *Cidade/UF:* ${formData.location}\n` +
-      `🏠 *Tipo:* ${formData.type}\n` +
-      `⚡ *Consumo:* ${formData.consumption || 'Não informado'} kWh/mês\n` +
-      `💬 *Mensagem:* ${formData.message || 'Sem mensagem'}\n\n` +
-      `---\n` +
-      `_Enviado pelo site mtsolarpe.com.br_`;
+    const message = `🌞 Novo Lead - MT Solar\n` +
+      `👤 Nome: ${formData.name}\n` +
+      `📱 WhatsApp: ${formData.whatsapp}\n` +
+      `📍 Cidade/UF: ${formData.location}\n` +
+      `🏠 Tipo: ${formData.type}\n` +
+      `⚡ Consumo: ${formData.consumption || 'Não informado'} kWh/mês\n` +
+      `💬 ${formData.message || 'Sem mensagem'}\n` +
+      `Enviado pelo site mtsolarpe.com.br`;
 
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/5581997003260?text=${encodedMessage}`;
@@ -47,7 +46,19 @@ export default function LeadForm() {
     setTimeout(() => {
       window.open(whatsappUrl, '_blank');
       setStatus('success');
-    }, 1500);
+    }, 1000);
+  };
+
+  const resetForm = () => {
+    setFormData({
+      name: '',
+      whatsapp: '',
+      location: '',
+      type: 'Residencial',
+      consumption: '',
+      message: ''
+    });
+    setStatus('idle');
   };
 
   return (
@@ -64,25 +75,21 @@ export default function LeadForm() {
 
         <div className="max-w-[600px] mx-auto">
           {status === 'success' ? (
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="bg-emerald-50 border-2 border-emerald-100 p-12 rounded-[3rem] text-center"
-            >
+            <div className="bg-emerald-50 border-2 border-emerald-100 p-12 rounded-[3rem] text-center animate-slide-up">
               <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
                 <CheckCircle size={48} />
               </div>
-              <h3 className="text-2xl font-black text-emerald-800 mb-2">Redirecionando para o WhatsApp...</h3>
-              <p className="text-emerald-600 font-medium mb-8">
-                Caso a janela não tenha aberto, clique no botão abaixo.
+              <h3 className="text-2xl font-black text-emerald-800 mb-4">✅ Mensagem enviada com sucesso!</h3>
+              <p className="text-emerald-700 font-medium mb-8 leading-relaxed">
+                Obrigado por entrar em contato, <span className="font-bold">{formData.name}</span>! Um de nossos atendentes vai retornar em breve pelo WhatsApp. Estamos ansiosos para ajudar você a economizar na conta de luz! ☀️
               </p>
               <button 
-                onClick={() => setStatus('idle')}
-                className="text-emerald-700 font-bold hover:underline"
+                onClick={resetForm}
+                className="w-full bg-primary text-white py-5 rounded-2xl font-black text-xl hover:bg-dark transition-all shadow-xl"
               >
-                Voltar para o formulário
+                Fazer nova simulação
               </button>
-            </motion.div>
+            </div>
           ) : (
             <div className="bg-light p-8 md:p-12 rounded-[3rem] border border-gray-100 shadow-2xl shadow-primary/5">
               <form onSubmit={handleWhatsAppRedirect} className="space-y-6">

@@ -1,4 +1,4 @@
-import { Globe, MapPin, Phone } from 'lucide-react';
+import { Globe, MapPin, Phone, Instagram } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -17,7 +17,7 @@ export default function Footer() {
             </p>
             <div className="flex gap-5">
               <a href="https://instagram.com/mtsolar_" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center hover:bg-secondary hover:text-primary transition-all group">
-                <Globe size={24} />
+                <Instagram size={24} />
               </a>
               <a href="https://mtsolar.com.br" className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center hover:bg-secondary hover:text-primary transition-all group">
                 <Globe size={24} />
@@ -53,7 +53,7 @@ export default function Footer() {
                 <div className="bg-white/5 p-3 rounded-xl text-secondary">
                   <MapPin size={20} />
                 </div>
-                <span className="font-medium">Atendimento em Pernambuco, Alagoas e Paraíba</span>
+                <span className="font-medium">📍 Jaboatão dos Guararapes - PE</span>
               </li>
               <li className="flex items-center gap-4 text-gray-400">
                 <div className="bg-white/5 p-3 rounded-xl text-secondary">
@@ -63,9 +63,9 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-4 text-gray-400">
                 <div className="bg-white/5 p-3 rounded-xl text-secondary">
-                  <Globe size={20} />
+                  <Instagram size={20} />
                 </div>
-                <span className="font-medium">@mtsolar_</span>
+                <a href="https://instagram.com/mtsolar_" target="_blank" rel="noopener noreferrer" className="font-medium hover:text-secondary transition-colors">@mtsolar_</a>
               </li>
             </ul>
           </div>

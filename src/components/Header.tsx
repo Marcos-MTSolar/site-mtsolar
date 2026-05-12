@@ -31,7 +31,8 @@ export default function Header() {
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
         {/* Logo */}
-        <a href="#hero" className="flex items-center gap-2">
+        <a href="#hero" className="flex items-center gap-3">
+          <img src="/favicon.svg" alt="MT Solar Logo" className="h-10 w-auto" />
           <span className="text-2xl font-black tracking-tighter">
             <span className="text-primary">MT</span> <span className="text-secondary">SOLAR</span>
           </span>

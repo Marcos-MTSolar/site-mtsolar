@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Calculator, TrendingUp, Zap, Clock, ArrowRight, Loader2 } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
 
 type InputMode = 'kwh' | 'brl';
 
@@ -111,43 +110,37 @@ export default function SolarCalculator() {
               </div>
 
               {/* Results Section */}
-              <AnimatePresence>
-                {showResult && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 40 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="pt-12 border-t border-white/10 space-y-10"
-                  >
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                      {[
-                        { icon: <Zap size={24} />, label: 'Potência Total', value: `${kwp} kWp` },
-                        { icon: <Calculator size={24} />, label: 'Nº de Painéis', value: panels },
-                        { icon: <TrendingUp size={24} />, label: 'Economia Mensal', value: `R$ ${monthlySavings.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}` },
-                        { icon: <Clock size={24} />, label: 'Retorno (ROI)', value: `${roiMonths} meses` },
-                      ].map((item, i) => (
-                        <div key={i} className="bg-white p-8 rounded-[2rem] border-2 border-secondary/50 text-primary shadow-xl">
-                          <div className="text-secondary mb-4">{item.icon}</div>
-                          <p className="text-xs font-black uppercase tracking-widest text-gray-400 mb-1">{item.label}</p>
-                          <p className="text-2xl font-black">{item.value}</p>
-                        </div>
-                      ))}
-                    </div>
+              {showResult && (
+                <div className="pt-12 border-t border-white/10 space-y-10 animate-slide-up">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {[
+                      { icon: <Zap size={24} />, label: 'Potência Total', value: `${kwp} kWp` },
+                      { icon: <Calculator size={24} />, label: 'Nº de Painéis', value: panels },
+                      { icon: <TrendingUp size={24} />, label: 'Economia Mensal', value: `R$ ${monthlySavings.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}` },
+                      { icon: <Clock size={24} />, label: 'Retorno (ROI)', value: `${roiMonths} meses` },
+                    ].map((item, i) => (
+                      <div key={i} className="bg-white p-8 rounded-[2rem] border-2 border-secondary/50 text-primary shadow-xl">
+                        <div className="text-secondary mb-4">{item.icon}</div>
+                        <p className="text-xs font-black uppercase tracking-widest text-gray-400 mb-1">{item.label}</p>
+                        <p className="text-2xl font-black">{item.value}</p>
+                      </div>
+                    ))}
+                  </div>
 
-                    <div className="bg-secondary/10 border border-secondary/30 rounded-3xl p-8 text-center">
-                      <p className="text-lg font-bold mb-6">
-                        Sistema estimado: <span className="text-secondary">{kwp} kWp</span> com <span className="text-secondary">{panels} painéis</span> de 550W.
-                      </p>
-                      <a
-                        href="#contact"
-                        className="bg-secondary text-primary px-10 py-5 rounded-2xl font-black text-xl hover:bg-white transition-all inline-flex items-center gap-3 group"
-                      >
-                        Quero um orçamento gratuito
-                        <ArrowRight className="group-hover:translate-x-2 transition-transform" />
-                      </a>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                  <div className="bg-secondary/10 border border-secondary/30 rounded-3xl p-8 text-center">
+                    <p className="text-lg font-bold mb-6">
+                      Sistema estimado: <span className="text-secondary">{kwp} kWp</span> com <span className="text-secondary">{panels} painéis</span> de 550W.
+                    </p>
+                    <a
+                      href="#contact"
+                      className="bg-secondary text-primary px-10 py-5 rounded-2xl font-black text-xl hover:bg-white transition-all inline-flex items-center gap-3 group"
+                    >
+                      Quero um orçamento gratuito
+                      <ArrowRight className="group-hover:translate-x-2 transition-transform" />
+                    </a>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

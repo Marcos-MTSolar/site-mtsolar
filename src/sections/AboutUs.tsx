@@ -3,8 +3,8 @@ import { motion } from 'motion/react';
 
 const statsCards = [
   { value: '+5 anos', label: 'de experiência da equipe' },
-  { value: '3 estados', label: 'Pernambuco, Alagoas e Paraíba' },
-  { value: '100%', label: 'Soluções completas sob medida' },
+  { value: '3 estados', label: 'PE, AL e PB' },
+  { value: '100%', label: 'Soluções sob medida' },
   { value: '4 escolas', label: 'com energia solar instalada' },
 ];
 
@@ -67,7 +67,7 @@ export default function AboutUs() {
                 className="bg-secondary p-8 rounded-[2.5rem] flex flex-col justify-center min-h-[200px] shadow-xl shadow-secondary/10 hover:scale-105 transition-transform"
               >
                 <span className="text-4xl font-black text-primary mb-2 block">{card.value}</span>
-                <p className="text-primary/80 font-bold leading-snug">{card.label}</p>
+                <p className="text-primary font-bold leading-snug">{card.label}</p>
               </motion.div>
             ))}
           </div>
