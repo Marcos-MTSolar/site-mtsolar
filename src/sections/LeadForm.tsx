@@ -53,7 +53,7 @@ export default function LeadForm() {
   };
 
   return (
-    <section id="contact" className="py-24 bg-white">
+    <section id="contato" className="py-24 bg-white">
       <div className="container mx-auto px-6">
         <div className="max-w-2xl mx-auto text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-black text-primary mb-4">

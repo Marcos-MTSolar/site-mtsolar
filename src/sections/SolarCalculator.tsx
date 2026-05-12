@@ -28,6 +28,13 @@ export default function SolarCalculator() {
     }, 600);
   };
 
+  const scrollToForm = () => {
+    const form = document.getElementById('contato');
+    if (form) {
+      form.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   // Logic
   const consumptionKwh = mode === 'kwh' ? value : value / TARIFF;
   
@@ -159,15 +166,13 @@ export default function SolarCalculator() {
                         Sistema de {kwpReal.toLocaleString('pt-BR')} kWp com {panels} painéis de 585W.
                       </span>
                     </p>
-                    <a
-                      href="https://wa.me/5581997003260"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-3 bg-secondary text-primary px-10 py-4 rounded-2xl font-black text-xl hover:bg-white transition-all duration-300"
+                    <button
+                      onClick={scrollToForm}
+                      className="inline-flex items-center gap-3 bg-secondary text-primary px-10 py-4 rounded-2xl font-black text-xl hover:bg-white transition-all duration-300 shadow-xl"
                     >
                       Solicitar Orçamento Gratuito
                       <ArrowRight size={24} />
-                    </a>
+                    </button>
                   </div>
                 </div>
               )}
