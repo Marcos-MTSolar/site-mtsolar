@@ -7,6 +7,8 @@ import Services from './sections/Services';
 import SolarCalculator from './sections/SolarCalculator';
 import LeadForm from './sections/LeadForm';
 import Projects from './sections/Projects';
+import FAQ from './sections/FAQ';
+import Testimonials from './sections/Testimonials';
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
         <Services />
         <SolarCalculator />
         <Projects />
+        <Testimonials />
+        <FAQ />
         <LeadForm />
       </main>
       <Footer />

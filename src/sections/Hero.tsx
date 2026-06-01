@@ -1,4 +1,5 @@
 import { Sun } from 'lucide-react';
+import usinaBg from '../assets/Usina.jpg';
 
 export default function Hero() {
   const scrollToCalculator = (e: React.MouseEvent) => {
@@ -10,12 +11,16 @@ export default function Hero() {
   };
 
   return (
-    <section id="hero" className="relative min-h-screen flex items-center pt-24 overflow-hidden bg-gradient-to-br from-[#0F1E3D] to-[#1B2F5E]">
-      {/* Visual Overlay - Solar Panel Texture Simulation */}
-      <div className="absolute inset-0 opacity-10 pointer-events-none">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
-        <div className="absolute inset-0 bg-gradient-to-t from-primary to-transparent" />
-      </div>
+    <section 
+      id="hero" 
+      className="relative min-h-screen flex items-center pt-24 overflow-hidden bg-cover bg-center"
+      style={{ backgroundImage: `url(${usinaBg})` }}
+    >
+      {/* Overlay escuro para garantir legibilidade do texto */}
+      <div 
+        className="absolute inset-0 pointer-events-none" 
+        style={{ backgroundColor: 'rgba(27, 47, 94, 0.72)' }} 
+      />
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-4xl">

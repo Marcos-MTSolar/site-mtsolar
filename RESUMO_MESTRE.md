@@ -52,3 +52,23 @@ Desenvolver e estabilizar um site institucional de alta conversão para a MT Sol
 *   **Estilização**: Tailwind CSS.
 *   **Ícones**: Lucide React + Custom SVGs.
 *   **Deployment**: Vercel (Configurado via GitHub).
+
+## 9. HISTÓRICO DE ALTERAÇÕES
+*   **O que foi feito**: Substituição do fundo da seção Hero pela imagem `Usina.jpg` com aplicação de overlay escuro de cor `rgba(27, 47, 94, 0.72)`.
+*   **Data e hora da alteração**: 01/06/2026 às 10:18 (Horário Local)
+*   **Arquivos modificados**:
+    *   `src/sections/Hero.tsx`
+
+*   **O que foi feito**: Criação da seção de FAQ (`src/sections/FAQ.tsx`) com acordeões usando transições CSS puras e registro no `src/App.tsx`.
+*   **Data e hora da alteração**: 01/06/2026 às 10:21 (Horário Local)
+*   **Arquivos modificados**:
+    *   `src/sections/FAQ.tsx`
+    *   `src/App.tsx`
+
+*   **O que foi feito**: Criação da seção de depoimentos (`src/sections/Testimonials.tsx`) com estrelas e cards translúcidos, e registro no `src/App.tsx`.
+*   **Data e hora da alteração**: 01/06/2026 às 10:23 (Horário Local)
+*   **Arquivos modificados**:
+    *   `src/sections/Testimonials.tsx`
+    *   `src/App.tsx`
+
+
